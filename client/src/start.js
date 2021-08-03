@@ -1,7 +1,12 @@
 import ReactDOM from "react-dom";
+import Welcome from "./welcome";
+import axios from "axios";
+import Logo from "./logo"
 
-ReactDOM.render(<HelloWorld />, document.querySelector("main"));
-
-function HelloWorld() {
-    return <div>Hello, World!</div>;
-}
+axios.get('/user/id.json').then(function({data}) {
+    if (!data.userId) {
+        ReactDOM.render(<Welcome />, document.querySelector("main"));
+    } else {
+        ReactDOM.render(<Logo />, document.querySelector("main"));
+    }
+});
