@@ -1,5 +1,7 @@
 import { Component } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 
 export class Registration extends Component {
     constructor() {
@@ -11,9 +13,6 @@ export class Registration extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange({ target }) {
-        //console.log("which input is running handleChange?", target.name);
-        //console.log("value the suer typed:", target.value);
-        // updating state!
         this.setState(
             {
                 [target.name]: target.value,
@@ -23,37 +22,20 @@ export class Registration extends Component {
     }
     handleSubmit(e) {
         e.preventDefault(); // prevents button from triggering a refresh
-        console.log("user clicked register");
-        // when the btn gets clicked we want to make an axios request sending 
-        // over our value of state
-        console.log("this.state in Register", this.state);
         axios
             .post("/register", this.state)
             .then((response) => {
                 if (response.data.success) {
-                    console.log("response.data.success",response.data.success);
                     location.reload();
-                    // stuff worked well with registering we want to do sth
-                    // that sth is trigger a reload, so that our start.js runs 
-                    // one more time and asks the server agin whether or not 
-                    // the user has the correct cookie :)
                 } else {
-                    console.log("response.data.success",response.data.success);
-                    console.log("register/axios/post: error", response.data);
                     this.state.error = response.data.error;
                     console.log("this.state.error ",this.state.error )
-                     
-                    // we should render an error!
-                    // we need to update our component's state to conditionally 
-                    // make an error appear
                 }
             })
-            .catch(
-                (err) =>
-                    console.log("something went wrong in POST /register", err)
-                // we need to update our component's state to conditionally 
-                // make an error appear
-            );
+            .catch((err) => {
+                console.log("something went wrong in POST /register", err);
+                this.state.error = "Something went wrong. Please try again!";
+            });
     }
     componentDidMount() {
         console.log("Register just mounted");
@@ -62,7 +44,10 @@ export class Registration extends Component {
     render() {
         return (
             <section>
-                <h2 style={{ color: "red" }}>{this.state.error} </h2>
+
+                {this.state.error && (
+                    <h2 style={{ color: "red" }}>{this.state.error}</h2>
+                )}
                 <form>
                     <input
                         name="firstname"
@@ -85,11 +70,14 @@ export class Registration extends Component {
                         placeholder="password"
                         onChange={this.handleChange}
                     />
-                    <button onClick={(e) => this.handleSubmit(e)}>
+                    <button className="form-button" onClick={(e) => this.handleSubmit(e)}>
                         Register
                     </button>
                 </form>
+                <Link to="/login">Already registerd? Log in!</Link>
+
             </section>
+
         );
     }
 }
