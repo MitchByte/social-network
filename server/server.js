@@ -101,8 +101,12 @@ app.post("/reset-password", (req,res) => {
         .then((result)=> {
             console.log("result.rows", result.rows)
             let secretCode = cryptoRandomString({length: 6});
+            console.log("result.rows[0].email, secretCode", result.rows[0].email, secretCode)
             db.userCode(result.rows[0].email, secretCode)
             .then()
+            .catch((err) => {
+                console.log("SERVER: insert code error: ", err)
+            })
 
 
 

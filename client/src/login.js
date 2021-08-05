@@ -59,8 +59,12 @@ export class Login extends Component {
                     </button>
 
                 </form>
-                <Link to="/">Register</Link>
-                <Link to="/reset-password">Forgot your password? Reset it here!</Link>
+                <div>
+                    <Link to="/">Register</Link>
+                </div>
+                <div>
+                    <Link to="/reset-password">Forgot your password? Reset it here!</Link>
+                </div>
 
             </section>
         )
