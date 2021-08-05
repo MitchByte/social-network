@@ -4,7 +4,7 @@ let secrets;
 if (process.env.NODE_ENV == 'production') {
     secrets = process.env; // in prod the secrets are environment variables
 } else {
-    secrets = require('./secrets'); // in dev they are in secrets.json which is listed in .gitignore
+    secrets = require('../secrets'); // in dev they are in secrets.json which is listed in .gitignore
 }
 
 const ses = new aws.SES({
@@ -12,3 +12,27 @@ const ses = new aws.SES({
     secretAccessKey: secrets.AWS_SECRET,
     region: 'eu-west-1'
 });
+
+
+
+module.exports.sendEmail = (recipiants, message,subject) => {
+
+    return ses.sendEmail({
+        Source: '<cautious.tire@spicedling.email>',
+        Destination: {
+            ToAddresses: [recipiants]
+        },
+        Message: {
+            Body: {
+                Text: {
+                    Data: message
+                }
+            },
+            Subject: {
+                Data: subject
+            }
+        }})
+        .promise()
+        .then(() => console.log('it worked!'))
+        .catch(err => console.log(err));
+}

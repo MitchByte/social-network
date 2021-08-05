@@ -14,4 +14,4 @@ CREATE TABLE reset_codes(
     email VARCHAR NOT NULL,
     code VARCHAR NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
+);

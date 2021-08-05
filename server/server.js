@@ -6,6 +6,7 @@ const bcrypt = require("./bcrypt");
 const cookieSession = require('cookie-session');
 const db = require("./db");
 const cryptoRandomString = require('crypto-random-string');
+const ses = require("./ses");
 
 
 app.use(express.json()); 
@@ -71,13 +72,12 @@ app.post("/login", (req,res) => {
             bcrypt.compare(req.body.password, result.rows[0].hashedpassword)
             .then((result) => {
                 if (!result) {
-                    res.json({error: "Sorry your password is incorrect!"})
+                    res.json({error: "Sorry your password is incorrect!"});
                     req.session = null;
                 } else {
-                    res.json({success: true})
+                    res.json({success: true});
                     console.log("AFTER Bcrypt req.session: ", req.session)
                 }
-
             })
             .catch((err) => {
                 console.log("error in bcryp compare", err);
@@ -99,26 +99,40 @@ app.post("/reset-password", (req,res) => {
     } else {
         db.userLogin(req.body.email)
         .then((result)=> {
-            console.log("result.rows", result.rows)
             let secretCode = cryptoRandomString({length: 6});
             console.log("result.rows[0].email, secretCode", result.rows[0].email, secretCode)
             db.userCode(result.rows[0].email, secretCode)
-            .then()
+            .then(()=> {
+                let mail = 'cautious.tire@spicedling.email'
+                let message = `Here is your code to reset your password: ${secretCode}. This code will expire within 10 minutes.`;
+                let subject= "Koisa - Reset password";
+                ses.sendEmail(mail,message,subject);
+                res.json({success: true});
+            })
             .catch((err) => {
                 console.log("SERVER: insert code error: ", err)
             })
-
-
-
         })
         .catch((err) => {
             res.json({error: "User not found"});
             console.log("SERVER ERROR RESET PASSWORD GET USER: ", err)
         })
     }
-
-
 });
+
+app.post("/reset-password/verify", (req,res)=> {
+    console.log("password verify: REQ:BODY: ", req.body)
+    if(!req.body.code || !req.body.newPassword) {
+        res.json({error: "Required input is missing"})
+    } else {
+        db.getCode()
+        .then((result) => {
+            console.log("code result", result.rows)
+            //if (req.body.code == result.rows[0].code)
+        })
+
+    }
+})
 
 
 
