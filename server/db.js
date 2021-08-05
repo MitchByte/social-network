@@ -17,5 +17,5 @@ module.exports.userCode = (email,code) => {
 }
 
 module.exports.getCode = () => {
-    return db.query(`SELECT * FROM reset_codes WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';`)
+    return db.query(`SELECT * FROM reset_codes WHERE CURRENT_TIMESTAMP - timestamp < INTERVAL '10 minutes'`)
 }

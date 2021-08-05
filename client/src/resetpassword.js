@@ -39,8 +39,14 @@ export class ResetPassword extends Component {
             return axios
                 .post("/reset-password/verify", this.state)
                 .then((result) => {
-                    console.log("Result after axios post reset password:", result);
-                    this.setState({view: 3})
+                    console.log("Result after axios post reset password:", result.data.success);
+                    if( result.data.success) {
+                        this.setState({view: 3})
+                    } else {
+                        //setting error messages right:
+                        this.state.error = result.data.error;
+                        console.log("reset password false code: ", this.state.error)
+                    }
                 })
                 .catch((err) => {
                     console.log("Err in axios post reset password: ", err)
@@ -82,6 +88,7 @@ export class ResetPassword extends Component {
                     />
                     <input 
                         name="newPassword"
+                        type="password"
                         placeholder="new password"
                         onChange={this.handleChange}
                     />

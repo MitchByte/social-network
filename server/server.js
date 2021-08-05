@@ -128,7 +128,15 @@ app.post("/reset-password/verify", (req,res)=> {
         db.getCode()
         .then((result) => {
             console.log("code result", result.rows)
-            //if (req.body.code == result.rows[0].code)
+            if (req.body.code == result.rows[result.rows.length -1].code){
+                res.json({success:true})
+            } else {
+                res.json({
+                    error: "Your code is invalid",
+                    success: false
+                })
+                
+            }
         })
 
     }
