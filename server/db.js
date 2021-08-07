@@ -19,3 +19,12 @@ module.exports.userCode = (email,code) => {
 module.exports.getCode = () => {
     return db.query(`SELECT * FROM reset_codes WHERE CURRENT_TIMESTAMP - timestamp < INTERVAL '10 minutes'`)
 }
+
+module.exports.getUser = (id)  => {
+    return db.query(`SELECT firstname,lastname,email,imageUrl FROM users WHERE id = ${id}`)
+}
+
+module.exports.uploadImage = (url,id) => {
+    return db.query(`UPDATE users SET imageurl = $1 WHERE id = ${id} RETURNING imageurl`,
+                    [url]) 
+}

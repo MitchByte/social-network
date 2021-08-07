@@ -3,8 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export class ResetPassword extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = { 
             error: false,
             view: 1
@@ -79,6 +79,7 @@ export class ResetPassword extends Component {
             <div>
                 <h1>Reset Password</h1>
                 <p>Please enter the code you received and a new password.</p>
+                
                 {this.state.error && <h2 style={{ color: "red" }}>{this.state.error}</h2>}
                 <form>
                     <input 
@@ -113,8 +114,7 @@ export class ResetPassword extends Component {
 render() {
     return (
         <div>
-            {/* call the method */}
-            {this.determineViewToRender()}
+             {this.determineViewToRender()}
         </div>
     );
 }

@@ -6,6 +6,8 @@ CREATE TABLE users(
     firstname VARCHAR NOT NULL,
     lastname VARCHAR NOT NULL,
     email VARCHAR UNIQUE NOT NULL,
+    imageurl VARCHAR,
+    bio VARCHAR,
     hashedpassword VARCHAR NOT NULL
 );
 

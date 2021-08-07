@@ -7,7 +7,27 @@ const cookieSession = require('cookie-session');
 const db = require("./db");
 const cryptoRandomString = require('crypto-random-string');
 const ses = require("./ses");
+const s3 = require("./ses");
+const multer = require('multer');
+const uidSafe = require('uid-safe');
 
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + '/uploads');
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 4097152
+    }
+});
 
 app.use(express.json()); 
 app.use(compression());
@@ -21,9 +41,28 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 app.get("/user/id.json", function (req, res) {
     res.json({
-        userId: null//req.session.userId,
+        userId: req.session.userId,
     });
 });
+
+app.get("/user", (req,res) => {
+    console.log("server/user : userId:",req.session.userId )
+    db.getUser(req.session.userId)
+    .then((result) => {
+        console.log("result for app.js get user", result.rows[0])
+        res.json({
+            success:true,
+            userObj: result.rows[0]
+        })
+    })
+    .catch((err) => {
+        console.log("ERROR: Server/user: getUser:",err);
+        res.json({
+            success: false
+        })
+    })
+})
+
 
 app.get("/logout", (req,res) => {
     res.json({
@@ -140,7 +179,33 @@ app.post("/reset-password/verify", (req,res)=> {
         })
 
     }
-})
+});
+
+
+app.post('/upload', uploader.single('file'), s3.upload, (req, res) => {
+    console.log("req.body", req.body);
+
+    if (req.file) {
+        let url = "https://s3.amazonaws.com/spicedling/"+req.file.filename;
+        
+        db.uploadImage(url,req.session.userId)
+        .then((result)=> {
+            console.log("RESULT insertImage",result.rows);
+            res.json({
+                success: true,
+                imgUrl: url
+            });
+        })
+        .catch((err) => {
+            console.log("SERVER.JS / insertImage/ Error:",err)
+        });
+        
+    } else {
+        res.json({
+            success: false
+        });
+    }
+});
 
 
 
