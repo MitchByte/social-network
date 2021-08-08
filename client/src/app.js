@@ -3,6 +3,7 @@ import axios from "axios";
 import Logo from "./logo";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
+import Profile from "./profile";
 
 
 export default class App extends Component {
@@ -81,6 +82,15 @@ export default class App extends Component {
                         toggleUploader={this.toggleUploader}
                     />)}
                    
+                </div>
+
+                <div className="profile">
+                    <Profile 
+                        first={this.state.first}
+                        last={this.state.last}
+                        imageUrl={this.state.imageUrl}
+
+                    />
                 </div>
                 
             </div>
