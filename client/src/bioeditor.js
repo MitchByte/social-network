@@ -6,19 +6,14 @@ export default class BioEditior extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            editorVisible:false,
-            draftBio:props.bio,
+            editorVisible: false,
+            draftBio: null,
         };
-        console.log("bioeditor.js:this.props.bio in contructor: ", this.props.bio);
-        console.log("bioeditor.js: props in contructor: ",props.bio);
-
-        console.log("what does draftbio look like: ", this.draftBio)
+        console.log("bioeditor.js:  this.props in contructor: ", this.props);
 
         this.toggleTextarea = this.toggleTextarea.bind(this);
         this.updateDbBio = this.updateDbBio.bind(this);
         this.handleChange = this.handleChange.bind(this);
-
-
     }
 
     toggleTextarea() {
@@ -26,21 +21,27 @@ export default class BioEditior extends Component {
     }
 
     handleChange({target}){
+        console.log("bioeditor.js: this state before handlechange:", this.state)
+
         //console.log("HANDLE CHANGE IN BIO.js", target);
-        console.log("[target.name]:target.value}",{[target.name]:target.value})
+        //console.log("[target.name]:target.value}",{[target.name]:target.value})
         this.setState({[target.name]:target.value});
-        //console.log("this state after target.value:", this.state)
+        //this.setState({value: target.value})
+        console.log("bioeditor.js: this state after handlechange:", this.state)
 
     }
 
     updateDbBio() {
-        console.log("sending this axios post to profile/bio: ",this.state)
+        console.log("sending this axios post to profile/bio: ",this.state);
         axios
             .post("/profile/bio", this.state)
             .then(({data}) => {
                 console.log("updateDBBio:", data);
-                this.setState({draftBio: data.bio})
-                console.log("bioeditor.js: THIS STATE AFTER click update bio",this.state)
+                this.props.methodInBio(data.bio);
+                //needs to reload to see new bio
+                location.reload();  
+                this.toggleTextarea();
+                
             })
             .catch((err) => {
                 console.log("ERROR: bio.js: updateDbBio:", err)
@@ -51,16 +52,23 @@ export default class BioEditior extends Component {
     render() {
         return (
             <div className="bio">
-                <p className="bio-text">
-                    {this.draftBio}
-                </p>
+                {this.props.bio && !this.state.editorVisible && 
+                    <div>
+                        <p className="bio-text">{this.props.bio}</p>
+                        <button className="update-bio-button" onClick={this.toggleTextarea}>Update Bio</button>
+                    </div>
+                }
+
                 {this.state.editorVisible && 
                     <div>
-                        <textarea name="bio" onChange={this.handleChange}/> 
-                        <button onClick={this.updateDbBio,this.toggleTextarea}>Save</button>
-                    </div>}
-                {!this.state.editorVisible && 
-                    <button onClick={this.toggleTextarea}>Update Bio</button>}
+                        <textarea name="bio" onChange={this.handleChange} defaultValue={ this.props.bio} rows="5" cols="50"/> 
+                        <button className="save-bio-button" onClick={this.updateDbBio}>Save</button>
+                    </div>
+                }
+                {!this.props.bio && !this.state.editorVisible &&
+                <p className="add-bio" onClick={this.toggleTextarea}> Add Bio</p>
+                }
+                
             </div>
 
         )

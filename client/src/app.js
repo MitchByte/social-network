@@ -20,7 +20,8 @@ export default class App extends Component {
         };
         this.componentDidMount = this.componentDidMount.bind(this);
         this.toggleUploader= this.toggleUploader.bind(this);
-        this.methodInApp = this.methodInApp.bind(this)
+        this.methodInApp = this.methodInApp.bind(this);
+        this.methodInBio = this.methodInBio.bind(this);
     }
 
     
@@ -61,42 +62,49 @@ export default class App extends Component {
         this.toggleUploader()
     }
 
+    methodInBio(arg) {
+        console.log("app.js: methodinBio:arg: ", arg);
+        this.state.bio = arg.bio;
+    }
+
     render() {
         return (
             <div>
                 <div className="header">
                     {this.state.error && (
-                    <h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)}
+                    <h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)
+                    }
                     <Logo/>
                     <div onClick={this.toggleUploader}>
                         <ProfilePic 
                         first={this.state.first}
                         last={this.state.last}
                         imageUrl={this.state.imageUrl}
+                        className="header-pic"
                     />
                     </div>
+                </div>
+                <div className="main-body">
+                    <div className="profile">
+                        <Profile 
+                            first={this.state.first}
+                            last={this.state.last}
+                            imageUrl={this.state.imageUrl}
+                            bio = {this.state.bio}
+                            methodInBio = {this.methodInBio}
+
+                        />
+                    </div>
+                    <div className="up">
+                        {this.state.imgUploadVisible && ( 
+                        <Uploader 
+                            className="uploader" 
+                            methodInApp={this.methodInApp}
+                            toggleUploader={this.toggleUploader}
+                        />)}
                     
-                </div>
-                <div className="up">
-                    {this.state.imgUploadVisible && ( 
-                    <Uploader 
-                        className="uploader" 
-                        methodInApp={this.methodInApp}
-                        toggleUploader={this.toggleUploader}
-                    />)}
-                   
-                </div>
-
-                <div className="profile">
-                    <Profile 
-                        first={this.state.first}
-                        last={this.state.last}
-                        imageUrl={this.state.imageUrl}
-                        bio = {this.state.bio}
-
-                    />
-                </div>
-                
+                    </div>
+                </div>   
             </div>
 
         )

@@ -50,6 +50,7 @@ app.get("/user", (req,res) => {
     db.getUser(req.session.userId)
     .then((result) => {
         console.log("result for app.js get user", result.rows[0])
+        req.session.bio = result.rows[0].bio
         res.json({
             success:true,
             userObj: result.rows[0]
@@ -209,19 +210,24 @@ app.post('/upload', uploader.single('file'), s3.upload, (req, res) => {
 });
 
 app.post("/profile/bio", (req, res) => {
-    console.log("/PRoFILE/BIO; REQ:BODY: ", req.body.bio)
-    db.userBio(req.body.bio, req.session.userId)
-    .then((result) => {
-        console.log("BIO REsULT:", result.rows);
-        res.json({success: true, bio: result.rows[0]})
+    console.log("/PROFILE/BIO; REQ:BODY: ", req.body)
+    if (req.body.bio){
+        db.userBio(req.body.bio, req.session.userId)
+        .then((result) => {
+            console.log("BIO REsULT:", result.rows);
+            res.json({success: true, bio: result.rows[0]})
+        })
+        .catch((err) => {
+            console.log("ERROR: Server.js/profile/bio: userBio: ", err);
+            res.json({success: false,
+            error: "We are sorry, updating profile does not work at the moment. Please try again later."})
+        })
+    } else {
+        console.log("req.session.bio:",req.session.bio)
+        res.json({success: true, bio: req.session.bio})
 
-    })
-    .catch((err) => {
-        console.log("ERROR: Server.js/profile/bio: userBio: ", err);
-        res.json({success: false,
-        error: "We are sorry, updating profile does not work at the moment. Please try again later."})
-
-    })
+    }
+    
 })
 
 
