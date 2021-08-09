@@ -100,3 +100,29 @@ input {
     align-items: center;
 
 }
+
+.profile-box {
+    background-color: rgba(248, 248, 255, 100%);
+    font-family: 'Allan', cursive;
+    display: flex;
+    width: 600px;
+    height: 400px;
+    padding: 10px;
+
+}
+
+.big-profile-pic {
+    width: 150px;
+    height: 150px;
+    margin:10px;
+}
+
+.bio {
+    display: flex;
+    flex-direction: column;
+    padding:10px; 
+}
+
+.bio-text {
+    border: 1px solid black;
+}

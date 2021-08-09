@@ -21,10 +21,15 @@ module.exports.getCode = () => {
 }
 
 module.exports.getUser = (id)  => {
-    return db.query(`SELECT firstname,lastname,email,imageUrl FROM users WHERE id = ${id}`)
+    return db.query(`SELECT firstname,lastname,email,imageUrl,bio FROM users WHERE id = ${id}`)
 }
 
 module.exports.uploadImage = (url,id) => {
     return db.query(`UPDATE users SET imageurl = $1 WHERE id = ${id} RETURNING imageurl`,
                     [url]) 
+}
+
+module.exports.userBio= (bio,id) => {
+    return db.query(`UPDATE users SET bio = $1 WHERE id = ${id} RETURNING bio`,
+    [bio])
 }

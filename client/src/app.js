@@ -14,6 +14,7 @@ export default class App extends Component {
             first: "",
             last: "",
             imageUrl: "",
+            bio:"",
             imgUploadVisible: false,
 
         };
@@ -29,13 +30,15 @@ export default class App extends Component {
             .get("/user")
             .then(({data}) => {
                 if(data.success){
-                    console.log("data.userObj", data.userObj)
-                    let {firstname,lastname,imageurl} = data.userObj;
+                    console.log("app.js. axios.get/user: data.userObj", data.userObj)
+                    let {firstname,lastname,imageurl,bio} = data.userObj;
                     this.setState({
                         first : firstname,
                         last: lastname,
                         imageUrl: imageurl,
+                        bio: bio,
                     })
+                    console.log("app.js state after get/user:", this.state)
                 } else {
                     this.setState({error: true})
                 }  
@@ -89,6 +92,7 @@ export default class App extends Component {
                         first={this.state.first}
                         last={this.state.last}
                         imageUrl={this.state.imageUrl}
+                        bio = {this.state.bio}
 
                     />
                 </div>

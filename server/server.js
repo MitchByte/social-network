@@ -104,6 +104,7 @@ app.post("/login", (req,res) => {
     } else {
         db.userLogin(req.body.email)
         .then((result) => {
+            console.log("server.js/login: db.userlogin:",result.rows[0])
             req.session.firstname = result.rows[0].firstname;
             req.session.lastname = result.rows[0].lastname;
             req.session.userId = result.rows[0].id;
@@ -206,6 +207,22 @@ app.post('/upload', uploader.single('file'), s3.upload, (req, res) => {
         });
     }
 });
+
+app.post("/profile/bio", (req, res) => {
+    console.log("/PRoFILE/BIO; REQ:BODY: ", req.body.bio)
+    db.userBio(req.body.bio, req.session.userId)
+    .then((result) => {
+        console.log("BIO REsULT:", result.rows);
+        res.json({success: true, bio: result.rows[0]})
+
+    })
+    .catch((err) => {
+        console.log("ERROR: Server.js/profile/bio: userBio: ", err);
+        res.json({success: false,
+        error: "We are sorry, updating profile does not work at the moment. Please try again later."})
+
+    })
+})
 
 
 
