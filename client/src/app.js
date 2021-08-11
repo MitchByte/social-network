@@ -4,6 +4,9 @@ import Logo from "./logo";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
+import {BrowserRouter, Route} from "react-router-dom";
+import OtherProfile from "./otherprofile";
+
 
 
 export default class App extends Component {
@@ -16,6 +19,7 @@ export default class App extends Component {
             imageUrl: "",
             bio:"",
             imgUploadVisible: false,
+            id:null, 
 
         };
         this.componentDidMount = this.componentDidMount.bind(this);
@@ -32,12 +36,13 @@ export default class App extends Component {
             .then(({data}) => {
                 if(data.success){
                     console.log("app.js. axios.get/user: data.userObj", data.userObj)
-                    let {firstname,lastname,imageurl,bio} = data.userObj;
+                    let {firstname,lastname,imageurl,bio,id} = data.userObj;
                     this.setState({
                         first : firstname,
                         last: lastname,
                         imageUrl: imageurl,
                         bio: bio,
+                        id: id,
                     })
                     console.log("app.js state after get/user:", this.state)
                 } else {
@@ -63,8 +68,9 @@ export default class App extends Component {
     }
 
     methodInBio(arg) {
-        console.log("app.js: methodinBio:arg: ", arg);
-        this.state.bio = arg.bio;
+        console.log("app.js: methodinBio:arg: ", arg); // 
+        this.setState({bio: arg.bio})
+        //this.state.bio = arg.bio;
     }
 
     render() {
@@ -84,6 +90,9 @@ export default class App extends Component {
                     />
                     </div>
                 </div>
+
+
+                {/*    
                 <div className="main-body">
                     <div className="profile">
                         <Profile 
@@ -104,7 +113,49 @@ export default class App extends Component {
                         />)}
                     
                     </div>
-                </div>   
+                        </div>  */}
+
+
+                <BrowserRouter>
+                    <div>
+                        <Route exact path="/"
+                            render={() => (
+                                <div className="main-body">
+                                    <div className="profile">
+                                    <Profile
+                                        first={this.state.first}
+                                        last={this.state.last}
+                                        imageUrl={this.state.imageUrl}
+                                        bio = {this.state.bio}
+                                        methodInBio = {this.methodInBio}
+                                        id={this.state.id}
+                                    />
+                                    </div>
+                                    <div className="up">
+                                    {this.state.imgUploadVisible && ( 
+                                    <Uploader 
+                                        className="uploader" 
+                                        methodInApp={this.methodInApp}
+                                        toggleUploader={this.toggleUploader}
+                                    />)}
+                                
+                                    </div>
+                                </div>
+                            )}
+                        />
+                        <Route path ="/user/:id"
+                            render={props => (
+                                <div className="profile-box">
+                                <OtherProfile
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                />
+                                </div> 
+                            )}
+                        />
+                    </div>
+                </BrowserRouter>
             </div>
 
         )

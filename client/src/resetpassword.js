@@ -114,7 +114,7 @@ export class ResetPassword extends Component {
 render() {
     return (
         <div>
-             {this.determineViewToRender()}
+            {this.determineViewToRender()}
         </div>
     );
 }

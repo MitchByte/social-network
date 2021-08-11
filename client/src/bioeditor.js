@@ -39,7 +39,7 @@ export default class BioEditior extends Component {
                 console.log("updateDBBio:", data);
                 this.props.methodInBio(data.bio);
                 //needs to reload to see new bio
-                location.reload();  
+                //location.reload();  
                 this.toggleTextarea();
                 
             })

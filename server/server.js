@@ -46,10 +46,10 @@ app.get("/user/id.json", function (req, res) {
 });
 
 app.get("/user", (req,res) => {
-    console.log("server/user : userId:",req.session.userId )
+    //console.log("server/user : userId:",req.session.userId )
     db.getUser(req.session.userId)
     .then((result) => {
-        console.log("result for app.js get user", result.rows[0])
+        console.log("SERVER.JS: /user: db.getuser", result.rows[0])
         req.session.bio = result.rows[0].bio
         res.json({
             success:true,
@@ -64,6 +64,22 @@ app.get("/user", (req,res) => {
     })
 })
 
+
+app.get("/api/user/:id", (req,res)=> {
+    console.log("SERVER.JS/ user/id: req.query:", req.query);
+
+    console.log("SERVER.JS/ user/id: req.params:", req.params);
+    db.getUser( req.params.id)
+    .then((result)=> {
+        console.log("SERVER.JS: user/id/: db.getUser: ", result.rows[0]);
+        res.json({
+            success:true,
+            userObj: result.rows[0]
+
+        })
+    })
+
+})
 
 app.get("/logout", (req,res) => {
     res.json({
