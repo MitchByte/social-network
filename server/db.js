@@ -21,7 +21,7 @@ module.exports.getCode = () => {
 }
 
 module.exports.getUser = (id)  => {
-    return db.query(`SELECT firstname,lastname,email,imageUrl,bio FROM users WHERE id = ${id}`)
+    return db.query(`SELECT id,firstname,lastname,email,imageUrl,bio FROM users WHERE id = ${id}`)
 }
 
 module.exports.uploadImage = (url,id) => {
@@ -32,4 +32,8 @@ module.exports.uploadImage = (url,id) => {
 module.exports.userBio= (bio,id) => {
     return db.query(`UPDATE users SET bio = $1 WHERE id = ${id} RETURNING bio`,
     [bio])
+}
+
+module.exports.getUserLimitDesc = (id) => {
+    return db.query(`SELECT id,firstname,lastname,imageUrl, (SELECT id FROM users ORDER BY id ASC LIMIT 1) AS "lowestId" FROM users WHERE id < ${id} ORDER BY id DESC LIMIT 3;`)
 }

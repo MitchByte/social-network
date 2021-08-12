@@ -1,4 +1,5 @@
 import { Component} from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Logo from "./logo";
 import ProfilePic from "./profilepic";
@@ -6,6 +7,7 @@ import Uploader from "./uploader";
 import Profile from "./profile";
 import {BrowserRouter, Route} from "react-router-dom";
 import OtherProfile from "./otherprofile";
+import FindPeople from "./findpeople";
 
 
 
@@ -30,7 +32,6 @@ export default class App extends Component {
 
     
     componentDidMount() {
-        // get infos first from server
         axios
             .get("/user")
             .then(({data}) => {
@@ -62,15 +63,14 @@ export default class App extends Component {
     }
 
     methodInApp(arg) {
-        console.log("APP.js: methodinapp", arg);
+        //console.log("APP.js: methodinapp", arg);
         this.state.imageUrl = arg;
         this.toggleUploader()
     }
 
     methodInBio(arg) {
-        console.log("app.js: methodinBio:arg: ", arg); // 
+        //console.log("app.js: methodinBio:arg: ", arg);  
         this.setState({bio: arg.bio})
-        //this.state.bio = arg.bio;
     }
 
     render() {
@@ -118,6 +118,8 @@ export default class App extends Component {
 
                 <BrowserRouter>
                     <div>
+                        <Link to="/users">Find people</Link>
+
                         <Route exact path="/"
                             render={() => (
                                 <div className="main-body">
@@ -143,13 +145,25 @@ export default class App extends Component {
                                 </div>
                             )}
                         />
-                        <Route path ="/user/:id"
+                        <Route path ="/user/id"
                             render={props => (
                                 <div className="profile-box">
                                 <OtherProfile
                                     key={props.match.url}
                                     match={props.match}
                                     history={props.history}
+                                />
+                                </div> 
+                            )}
+                        />
+                        <Route path ="/users"
+                            render={props => (
+                                <div className="find-box">
+                                <FindPeople
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                    id={this.state.id}
                                 />
                                 </div> 
                             )}

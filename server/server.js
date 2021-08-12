@@ -50,7 +50,8 @@ app.get("/user", (req,res) => {
     db.getUser(req.session.userId)
     .then((result) => {
         console.log("SERVER.JS: /user: db.getuser", result.rows[0])
-        req.session.bio = result.rows[0].bio
+        req.session.bio = result.rows[0].bio;
+        req.session.id = result.rows[0].id;
         res.json({
             success:true,
             userObj: result.rows[0]
@@ -78,14 +79,30 @@ app.get("/api/user/:id", (req,res)=> {
 
         })
     })
+})
+
+app.get("/find-users", (req,res) => {
+    console.log("SERVER.JS/find-users: req.session.id", req.session.id);
+    let id = req.session.id;
+    if (id < '3'){
+        id = 3;
+    } 
+    console.log("/finduser: id: ", id)
+    db.getUserLimitDesc(id)
+        .then((result) => {
+            console.log("db.getUserLimitDesc: ",result.rows)
+            res.json({users: result.rows})
+        })
+        .catch((err) => {
+            console.log("ERROR: SERVER.JS/find-users: db.getUserLimitDesc ", err);
+            res.json({error: "Could not find other users."})
+        })
 
 })
 
 app.get("/logout", (req,res) => {
-    res.json({
-        userId: null,
-    });
-
+    req.session = null;
+    res.redirect("/");
 });
 
 app.post("/register", (req,res) => {

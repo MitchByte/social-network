@@ -154,3 +154,17 @@ input {
     display: flex;
     flex-direction: row;
 }
+
+.find-box {
+    background-color: rgba(248, 248, 255, 100%);
+    font-family: 'Allan', cursive;
+    display: flex;
+    width: 600px;
+    height: 400px;
+    padding: 10px;
+    margin: 20px;
+}
+
+.find-input {
+    
+}
