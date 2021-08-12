@@ -118,7 +118,9 @@ export default class App extends Component {
 
                 <BrowserRouter>
                     <div>
-                        <Link to="/users">Find people</Link>
+                        <div className="link-list">
+                            <Link to="/users">Find people</Link>
+                        </div>
 
                         <Route exact path="/"
                             render={() => (

@@ -34,6 +34,11 @@ module.exports.userBio= (bio,id) => {
     [bio])
 }
 
-module.exports.getUserLimitDesc = (id) => {
-    return db.query(`SELECT id,firstname,lastname,imageUrl, (SELECT id FROM users ORDER BY id ASC LIMIT 1) AS "lowestId" FROM users WHERE id < ${id} ORDER BY id DESC LIMIT 3;`)
+module.exports.getUserLimitDesc = () => {
+    return db.query(`SELECT id,firstname,lastname,imageUrl FROM users ORDER BY id DESC LIMIT 3;`)
+}
+
+module.exports.searchedUsers = (val) => {
+    return db.query(`SELECT * FROM users WHERE (firstname || ' ' || lastname) ILIKE $1 LIMIT 20;`,
+    [val + '%'])
 }

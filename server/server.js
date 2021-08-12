@@ -82,13 +82,7 @@ app.get("/api/user/:id", (req,res)=> {
 })
 
 app.get("/find-users", (req,res) => {
-    console.log("SERVER.JS/find-users: req.session.id", req.session.id);
-    let id = req.session.id;
-    if (id < '3'){
-        id = 3;
-    } 
-    console.log("/finduser: id: ", id)
-    db.getUserLimitDesc(id)
+    db.getUserLimitDesc()
         .then((result) => {
             console.log("db.getUserLimitDesc: ",result.rows)
             res.json({users: result.rows})
@@ -97,6 +91,20 @@ app.get("/find-users", (req,res) => {
             console.log("ERROR: SERVER.JS/find-users: db.getUserLimitDesc ", err);
             res.json({error: "Could not find other users."})
         })
+
+})
+
+app.get("/find/:searchTerm", (req,res) => {
+    console.log("req.params", req.params.searchTerm);
+    db.searchedUsers( req.params.searchTerm)
+    .then((result) => {
+        console.log("searchedUsers: ", result.rows);
+        res.json({searchTerm: result.rows})
+
+    })
+    .catch((err) => {
+        console.log("ERROR: /find/searchterm: ", err)
+    })
 
 })
 
