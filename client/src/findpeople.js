@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from 'react';
 
-
-
 export default function FindPeople(props) {
     console.log("FINDPEOPLE.JS: props:", props);
     const [users, setUsers] = useState([]);

@@ -1,6 +1,7 @@
 import { Component } from "react";
 import axios from "axios";
 import ProfilePic from "./profilepic";
+import FriendButton from "./friendbutton"
 
 
 export default class OtherProfile extends Component {
@@ -50,12 +51,14 @@ export default class OtherProfile extends Component {
                         imageUrl = {this.state.imageUrl}
                         className = "big-profile-pic"
                     />
+                    <FriendButton
+                        idUrl = {this.props.match.params.id}
+                    />
                 </div>
                 <div>
                     <h2>{this.state.first} {this.state.last}</h2>
-                    <p>My Bio:
-                        {this.state.bio}
-                    </p>
+                    <p>Bio</p>
+                    <p className="bio-box">{this.state.bio}</p>
 
                 </div>
             </div>

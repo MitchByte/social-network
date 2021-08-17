@@ -3,11 +3,9 @@ import BioEditior from "./bioeditor"
 
 
 export default function Profile({first,last,imageUrl,bio,methodInBio}) {
-    console.log("bio in profile.js",bio)
     return (
         <div className="profile-box">
             <div>
-
                 <ProfilePic 
                     imageUrl = {imageUrl}
                     className = "big-profile-pic"

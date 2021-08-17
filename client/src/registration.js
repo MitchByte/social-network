@@ -74,7 +74,7 @@ export class Registration extends Component {
                         Register
                     </button>
                 </form>
-                <Link to="/login">Already registerd? Log in!</Link>
+                <Link to="/userlogin">Already registerd? Log in!</Link>
 
             </section>
 

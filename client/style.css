@@ -76,7 +76,6 @@ input {
     width: 90px;
     margin:5px;
     object-fit: cover;
-
 }
 
 .uploader {
@@ -109,10 +108,8 @@ input {
     font-family: 'Allan', cursive;
     display: flex;
     width: 600px;
-    height: 400px;
     padding: 10px;
     margin: 20px;
-
 }
 
 .big-profile-pic {
@@ -120,7 +117,6 @@ input {
     height: 150px;
     margin:10px;
     object-fit: cover;
-
 }
 
 .bio {
@@ -202,10 +198,38 @@ input {
 .link-list a {
     text-decoration: none;
     color: black;
+    margin-left: 15px;
+    border:1px solid rgb(248, 248, 255);
+    padding: 5px;
 }
+
 a:hover {
     text-decoration: underline;
     cursor:pointer;
     color:#b35809;
 
+}
+
+.friend-button {
+    font-family: 'Allan', cursive;
+    font-size: 15px;
+    border-radius: 4px;
+    padding: 10px 75px;
+    border: none;
+    background-color: #f5d43f8c;
+    margin: 10px;
+    cursor:pointer;
+
+}
+
+.bio-box {
+    border: 1.5px solid #00000029;
+    padding: 8px;
+}
+
+p {
+    margin:10px;
+}
+h2 {
+    margin-left: 8px;
 }

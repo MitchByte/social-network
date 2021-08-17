@@ -77,9 +77,6 @@ export default class App extends Component {
         return (
             <div>
                 <div className="header">
-                    {this.state.error && (
-                    <h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)
-                    }
                     <Logo/>
                     <div onClick={this.toggleUploader}>
                         <ProfilePic 
@@ -88,6 +85,10 @@ export default class App extends Component {
                         imageUrl={this.state.imageUrl}
                         className="header-pic"
                     />
+                    </div>
+                    <div>
+                        {this.state.error && (
+                        <h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)}
                     </div>
                 </div>
 
@@ -119,7 +120,9 @@ export default class App extends Component {
                 <BrowserRouter>
                     <div>
                         <div className="link-list">
-                            <Link to="/users">Find people</Link>
+                            <div><Link to="/users">Find people</Link></div>
+                            <div> <Link to="/">My Profile</Link></div>
+                            <div><Link to="/logout">Logout</Link></div>
                         </div>
 
                         <Route exact path="/"
@@ -147,7 +150,8 @@ export default class App extends Component {
                                 </div>
                             )}
                         />
-                        <Route path ="/user/id"
+                      
+                        <Route path ="/user/:id"
                             render={props => (
                                 <div className="profile-box">
                                 <OtherProfile

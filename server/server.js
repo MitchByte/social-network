@@ -10,6 +10,11 @@ const ses = require("./ses");
 const s3 = require("./ses");
 const multer = require('multer');
 const uidSafe = require('uid-safe');
+const server = require('http').Server(app);
+const io = require('socket.io')(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000"))
+});
 
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -46,7 +51,7 @@ app.get("/user/id.json", function (req, res) {
 });
 
 app.get("/user", (req,res) => {
-    //console.log("server/user : userId:",req.session.userId )
+    console.log("server/user : userId:",req.session.userId )
     db.getUser(req.session.userId)
     .then((result) => {
         console.log("SERVER.JS: /user: db.getuser", result.rows[0])
@@ -95,18 +100,37 @@ app.get("/find-users", (req,res) => {
 })
 
 app.get("/find/:searchTerm", (req,res) => {
-    console.log("req.params", req.params.searchTerm);
+    console.log("/find/:searchTerm: .params", req.params.searchTerm);
     db.searchedUsers( req.params.searchTerm)
     .then((result) => {
-        console.log("searchedUsers: ", result.rows);
+        console.log("/find/:searchTerm: searchedUsers: ", result.rows);
         res.json({searchTerm: result.rows})
-
     })
     .catch((err) => {
         console.log("ERROR: /find/searchterm: ", err)
     })
-
 })
+
+
+app.get("/checkFriendStatus/:otherUserId", (req,res) => {
+    console.log("/checkFriendStatus/:otherUserId:  otherUserId", req.params.otherUserId);
+    let recipient_id = req.params.otherUserId;
+    let sender_id = req.session.id;
+
+    req.session.recipient_id = req.params.otherUserId;
+
+    console.log("/checkFriendStatus/:otherUserId: recipient_id ,sender_id", recipient_id ,sender_id);
+
+    db.getFriendshipStatus(recipient_id ,sender_id)
+    .then((result) => {
+        console.log("/checkFriendStatus/:otherUserId : db.getFriendshipStatus: ", result.rows);
+        res.json({friendshipStatus: result.rows})
+    })
+    .catch((err) => {
+        console.log("ERROR: /checkFriendStatus/:otherUserId: getFriendshipStatus: ", err)
+    })
+})
+
 
 app.get("/logout", (req,res) => {
     req.session = null;
@@ -269,6 +293,47 @@ app.post("/profile/bio", (req, res) => {
 
     }
     
+})
+
+app.post("/checkButton/:buttonText", (req,res) => {
+    console.log("/checkButton/:buttonText", req.params.buttonText);
+    let id_sender = req.session.id;
+    let id_recipient = req.session.recipient_id;
+    if (req.params.buttonText == "Send Friend Request") {
+        let request = false;
+        console.log("/checkButton/send request: sender -> recipient: ", id_sender, id_recipient)
+        db.sendRequest(id_sender, id_recipient, request)
+        .then((result) => {
+            console.log("/checkButton/db.sendrequest:  RESULT: ", result.rows[0])
+            res.json({accepted: result.rows[0].accepted, recipient:id_recipient})
+        })
+
+    }  else if (req.params.buttonText == "Accept friend request") {
+        let request = true;
+        console.log("/checkButton/update Friendship: sender -> recipient: ", id_sender, id_recipient, "status: ", request)
+        //recipient needs to be sender
+        db.updateFriendship( id_recipient, id_sender, request)
+        .then((result)=> {
+            console.log("req.session.id; req.session.recipient_id", req.session.id, req.session.recipient_id)
+            console.log("/checkButton/db.updateFriendship:  RESULT: ",result.rows[0]);
+            res.json({accepted: result.rows[0].accepted, recipient:id_recipient})
+        })
+        .catch((err) => {
+            console.log("ERROR: post/checkButton/buttontext/ updateFriendship", err);
+           
+        })
+
+    }else if (req.params.buttonText == "Cancel friend request" || req.params.buttonText == "End friendship" ) {
+        db.cancelRequest(id_sender, id_recipient)
+        .then(()=> {
+            console.log("Friendship deleted")
+            res.json({})
+        }) 
+        .catch((err) => {
+            console.log("ERROR: post/checkButton/buttontext/ cancelRequest", err)
+        })
+
+    }
 })
 
 
