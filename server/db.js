@@ -62,3 +62,10 @@ module.exports.updateFriendship = (sender_id, recipient_id, request) => {
     return db.query(`UPDATE friendships SET accepted = $3 WHERE sender_id = $1 AND recipient_id = $2 RETURNING accepted;`,
     [sender_id, recipient_id, request])
 }
+
+module.exports.receiveFriendsAndWannabees = (id) => {
+    return db.query(`SELECT users.id, firstname, lastname, imageurl, accepted FROM friendships JOIN users ON (accepted = FALSE AND recipient_id = $1 AND sender_id = users.id) OR
+                (accepted = TRUE AND recipient_id = $1 AND sender_id = users.id) OR
+                (accepted = TRUE AND sender_id = $1 AND recipient_id = users.id)`,
+                [id])
+}

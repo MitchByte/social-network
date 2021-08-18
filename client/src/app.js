@@ -8,6 +8,7 @@ import Profile from "./profile";
 import {BrowserRouter, Route} from "react-router-dom";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
+import Friends from "./friends";
 
 
 
@@ -93,36 +94,13 @@ export default class App extends Component {
                 </div>
 
 
-                {/*    
-                <div className="main-body">
-                    <div className="profile">
-                        <Profile 
-                            first={this.state.first}
-                            last={this.state.last}
-                            imageUrl={this.state.imageUrl}
-                            bio = {this.state.bio}
-                            methodInBio = {this.methodInBio}
-
-                        />
-                    </div>
-                    <div className="up">
-                        {this.state.imgUploadVisible && ( 
-                        <Uploader 
-                            className="uploader" 
-                            methodInApp={this.methodInApp}
-                            toggleUploader={this.toggleUploader}
-                        />)}
-                    
-                    </div>
-                        </div>  */}
-
-
                 <BrowserRouter>
                     <div>
                         <div className="link-list">
                             <div><Link to="/users">Find people</Link></div>
                             <div> <Link to="/">My Profile</Link></div>
                             <div><Link to="/logout">Logout</Link></div>
+                            <div><Link to="/friends">Friends</Link></div>
                         </div>
 
                         <Route exact path="/"
@@ -173,6 +151,15 @@ export default class App extends Component {
                                 />
                                 </div> 
                             )}
+                        />
+                        <Route path="/friends"
+                            render={props => {
+                                <Friends
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                />
+                            }} 
                         />
                     </div>
                 </BrowserRouter>

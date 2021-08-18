@@ -131,6 +131,19 @@ app.get("/checkFriendStatus/:otherUserId", (req,res) => {
     })
 })
 
+app.get("/api/friends", (req,res) => {
+    console.log("/api/friends working");
+
+    db.receiveFriendsAndWannabees(req.session.id)
+    .then((result) => {
+        console.log("friends and wannabees", result.rows);
+        res.json({friendsAndWannabees: result.rows});
+    })
+    .catch((err) => {
+        console.log("ERROR in /api/friends: db.receivFriendsAndWannabees", err)
+    })
+})
+
 
 app.get("/logout", (req,res) => {
     req.session = null;
