@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 export default function FriendButton(props) {
     //console.log("FRIENDBUTTON.JS: props: ",props);
     let otherUserId = props.idUrl;
+    let className = props.className;
     console.log("FRIENDBUTTON.JS: otherUserId: ",otherUserId)
     const [buttonText,setButtonText] = useState();
     const [friendObj, setFriendObj] = useState();
@@ -58,7 +59,7 @@ export default function FriendButton(props) {
 
     return (
         <div>
-            <button onClick={() => clickButton()} className="friend-button">{buttonText}</button>
+            <button onClick={() => clickButton()} className={className}>{buttonText}</button>
         </div>
     )
 }

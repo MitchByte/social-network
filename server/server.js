@@ -159,6 +159,7 @@ app.get("/logout", (req,res) => {
     res.redirect("/");
 });
 
+
 app.post("/register", (req,res) => {
     console.log("SERVER: POST/register: req", req.body);
     if (!req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) {

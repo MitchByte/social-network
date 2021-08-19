@@ -11,7 +11,7 @@ export default function Profile({first,last,imageUrl,bio,methodInBio}) {
                     className = "big-profile-pic"
                 />
             </div>
-            <div>
+            <div className="myprofile-box">
                 <h2>{first} {last}</h2>
                 <p>My Bio:</p>
                 <BioEditior 

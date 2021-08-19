@@ -13,6 +13,7 @@ import Chat from "./chat";
 
 
 
+
 export default class App extends Component {
     constructor() {
         super();
@@ -92,8 +93,7 @@ export default class App extends Component {
                             first={this.state.first}
                             last={this.state.last}
                             imageUrl={this.state.imageUrl}
-                            className="header-pic"
-                            />
+                            className="header-profile-pic"                            />
                         </div>
                         
                     </div>
@@ -174,6 +174,7 @@ export default class App extends Component {
                                 />
                             )} 
                         />
+                
                     </div>
                 </BrowserRouter>
             </div>

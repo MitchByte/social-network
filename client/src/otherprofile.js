@@ -45,17 +45,18 @@ export default class OtherProfile extends Component {
 
     render() {
         return (
-            <div>
-                <div>
+            <div className="otherprofile">
+                <div className="otherprofile-box">
                     <ProfilePic 
                         imageUrl = {this.state.imageUrl}
                         className = "big-profile-pic"
                     />
                     <FriendButton
                         idUrl = {this.props.match.params.id}
+                        className = "otherprofile-button"
                     />
                 </div>
-                <div>
+                <div className="otherprofile-box">
                     <h2>{this.state.first} {this.state.last}</h2>
                     <p>Bio</p>
                     <p className="bio-box">{this.state.bio}</p>
