@@ -336,7 +336,7 @@ app.post("/checkButton/:buttonText", (req,res) => {
            
         })
 
-    }else if (req.params.buttonText == "Cancel friend request" || req.params.buttonText == "End friendship" ) {
+    } else if (req.params.buttonText == "Cancel friend request" || req.params.buttonText == "End friendship" ) {
         db.cancelRequest(id_sender, id_recipient)
         .then(()=> {
             console.log("Friendship deleted")
@@ -346,6 +346,33 @@ app.post("/checkButton/:buttonText", (req,res) => {
             console.log("ERROR: post/checkButton/buttontext/ cancelRequest", err)
         })
 
+    }
+})
+
+app.post("/button/:text", (req,res) => {
+    let id_sender = req.session.id;
+    let id_recipient = req.body.otherId;
+    if (req.params.text == "cancel") {
+        db.cancelRequest(id_sender, id_recipient)
+        .then(()=> {
+            console.log("Friendship deleted")
+            res.json({success: true})
+        }) 
+        .catch((err) => {
+            console.log("ERROR: post/Button/cancel", err)
+        })
+
+    } else if (req.params.text == "accept") {
+        let request = true;
+        db.updateFriendship( id_recipient, id_sender, request)
+        .then((result)=> {
+            console.log("/button/db.updateFriendship:  RESULT: ",result.rows[0]);
+            res.json({success: true})
+        })
+        .catch((err) => {
+            console.log("ERROR: post/button/ updateFriendship", err);
+           
+        })
     }
 })
 

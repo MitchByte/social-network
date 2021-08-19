@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 
 export default function FindPeople(props) {
     console.log("FINDPEOPLE.JS: props:", props);
@@ -42,8 +44,10 @@ export default function FindPeople(props) {
                 {!searchTerm && users.map((user, index) => (
                     <div>
                         <div key={user.id} className="user-box">
+                            <Link to={"/user/"+ user.id}>
                             <img className="user-pic" src={user.imageurl || "/default-profilepic.jpg"}/>
                             <p>{user.firstname} {user.lastname}</p>
+                            </Link>
                         </div>
                     </div>
                     )
@@ -53,8 +57,10 @@ export default function FindPeople(props) {
                 {searchTerm && <p>Results: {searchTerm}</p>}
                 {searchTerm && results.map((user,index) => (
                     <div key={user.id} className="user-box">
+                            <Link to={"/user/"+ user.id}>
                             <img className="user-pic" src={user.imageurl || "/default-profilepic.jpg"}/>
                             <p>{user.firstname} {user.lastname}</p>
+                            </Link>
                         </div>
                     )
                 )}

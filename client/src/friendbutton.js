@@ -44,7 +44,7 @@ export default function FriendButton(props) {
         console.log("FRIENDBUTTON.JS: button clicked");
         console.log("friendObj", friendObj);
         axios
-            .post(`/checkButton/${buttonText}`)
+            .post(`/checkButton/${buttonText}`) 
             .then(() => {
                 getFriendshipStatus()
             })

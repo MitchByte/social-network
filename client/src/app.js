@@ -77,24 +77,24 @@ export default class App extends Component {
     render() {
         return (
             <div>
-                <div className="header">
-                    <Logo/>
-                    <div onClick={this.toggleUploader}>
-                        <ProfilePic 
-                        first={this.state.first}
-                        last={this.state.last}
-                        imageUrl={this.state.imageUrl}
-                        className="header-pic"
-                    />
-                    </div>
-                    <div>
-                        {this.state.error && (
-                        <h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)}
-                    </div>
-                </div>
+                
 
 
                 <BrowserRouter>
+                    <div className="header">
+                        <Logo/>
+                        <div onClick={this.toggleUploader}>
+                            <ProfilePic 
+                            first={this.state.first}
+                            last={this.state.last}
+                            imageUrl={this.state.imageUrl}
+                            className="header-pic"
+                            />
+                        </div>
+                        <div>
+                            {this.state.error && (<h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)}
+                        </div>
+                    </div>
                     <div>
                         <div className="link-list">
                             <div><Link to="/users">Find people</Link></div>
@@ -153,13 +153,13 @@ export default class App extends Component {
                             )}
                         />
                         <Route path="/friends"
-                            render={props => {
+                            render={props => (
                                 <Friends
                                     key={props.match.url}
                                     match={props.match}
                                     history={props.history}
                                 />
-                            }} 
+                            )} 
                         />
                     </div>
                 </BrowserRouter>

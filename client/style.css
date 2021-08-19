@@ -108,8 +108,9 @@ input {
     font-family: 'Allan', cursive;
     display: flex;
     width: 600px;
-    padding: 10px;
+    padding: 30px;
     margin: 20px;
+    align-items: center;
 }
 
 .big-profile-pic {
@@ -219,7 +220,6 @@ a:hover {
     background-color: #f5d43f8c;
     margin: 10px;
     cursor:pointer;
-
 }
 
 .bio-box {
@@ -232,4 +232,53 @@ p {
 }
 h2 {
     margin-left: 8px;
+}
+
+.friends-box {
+    background-color: rgba(248, 248, 255, 100%);
+    font-family: 'Allan', cursive;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+    margin: 20px;
+
+}
+
+a {
+    text-decoration: none;
+    color: black;
+
+}
+.friendjs-button {
+    font-family: 'Allan', cursive;
+    font-size: 15px;
+    border-radius: 4px;
+    padding: 9px 20px;
+    border: none;
+    background-color: #f5d43f8c;
+    margin: 10px;
+    cursor:pointer;
+    height: 40px;
+}
+
+.friendjs-box {
+    display: flex;
+    flex-direction: row;
+    border: 1.5px solid #00000029;
+    margin: 5px;
+}
+.friendjs-desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.f-box, .w-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
 }
