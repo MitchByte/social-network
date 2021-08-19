@@ -1,16 +1,11 @@
-//action creators {type:"domain/thingThatHappened",payload:{list:""}}
-
 export function receiveFriendsAndWannabees(fnwarray) {
-    console.log("action creators: receiveFriendsandwannabees:", fnwarray);
     return {
         type:"friends/received",
         payload: fnwarray,
     };
-    //creates an action to populate the state with the current list of friends and wannabees
 }
 
 export function acceptFriendRequest(id) {
-    //creates an action to accept a wannabee as a friend, the id should be in the payload
     return {
         type: "friends/accepted",
         payload: id
@@ -18,7 +13,6 @@ export function acceptFriendRequest(id) {
 }
 
 export function unfriend(id) {
-    //creates an action to end a friendship, the id should be in the payload
     return {
         type: "friends/unfriended",
         payload: id
@@ -27,8 +21,7 @@ export function unfriend(id) {
 
 
 //friends reducer 
-export default function friendsReducer(state=[],  action) {
-    console.log("SLICE:JS: action:", action)
+export default function friendsReducer(state=null,  action) {
     if( action.type == "friends/received") {
         //should set the state to be the array of friends and wannabees
         state = action.payload,
@@ -37,8 +30,6 @@ export default function friendsReducer(state=[],  action) {
         console.log("actions.payload.friends", action.payload)
     }
     if(action.type == "friends/accepted") {
-        console.log("SLICE.js:action.payload.id", action.payload);    
-        console.log("SLICE: state: ", state);
         //one of the users in the existing array of friends and wannabees should have their accepted
         // property set to true. (you may want to use the .map() method)
         state = state.map((friend)=> {

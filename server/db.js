@@ -69,3 +69,16 @@ module.exports.receiveFriendsAndWannabees = (id) => {
                 (accepted = TRUE AND sender_id = $1 AND recipient_id = users.id)`,
                 [id])
 }
+
+module.exports.addMessage = (text,userId) => {
+    return db.query(`INSERT INTO messages (text,user_id) VALUES ($1, $2)`,
+    [text, userId])
+}
+
+module.exports.getLastTenMessages = () => {
+    return db.query(`SELECT firstname, lastname, imageurl, text, created_at, user_id 
+        FROM messages 
+        JOIN users ON users.id = messages.user_id
+        ORDER BY created_at DESC
+        LIMIT 10;`)
+}

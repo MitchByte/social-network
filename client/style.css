@@ -25,6 +25,7 @@ main {
     flex-direction: column;
     align-items: center;
     width: 350px;
+    align-self: center;
 }
 
 .welcome-form {
@@ -70,14 +71,25 @@ input {
     justify-content: space-between;
     height: 100px;
 }
+.header div {
+    width: 29%;
+    display: inline-block;
 
+}
 .header-pic {
     height: 90px;
     width: 90px;
     margin:5px;
     object-fit: cover;
 }
-
+.profile-pic-div {
+    justify-content: flex-end;
+    
+}
+.header-profile-pic {
+    float: right;
+    right: 0;
+}
 .uploader {
     background-color: rgba(248, 248, 255, 90%);
     font-family: 'Allan', cursive;
@@ -203,6 +215,12 @@ input {
     border:1px solid rgb(248, 248, 255);
     padding: 5px;
 }
+.link-list a:hover {
+    background-color: #e277199a;
+    text-decoration: underline;
+    cursor:pointer;
+    color: black;
+}
 
 a:hover {
     text-decoration: underline;
@@ -280,5 +298,36 @@ a {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.chat-box {
+    background-color: rgba(248, 248, 255, 100%);
+    font-family: 'Allan', cursive;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+    margin: 20px;
+    align-items: center;
+}
+.new-messages {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 10px;
+    align-items: center;
+}
+
+.chat-button {
+    font-family: 'Allan', cursive;
+    font-size: 15px;
+    border-radius: 4px;
+    padding: 9px 20px;
+    border: none;
+    background-color: #f5d43f8c;
+    margin: 10px;
+    cursor:pointer;
+    height: 40px;
+    width: 50%;
 
 }

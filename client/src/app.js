@@ -9,6 +9,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findpeople";
 import Friends from "./friends";
+import Chat from "./chat";
 
 
 
@@ -83,7 +84,10 @@ export default class App extends Component {
                 <BrowserRouter>
                     <div className="header">
                         <Logo/>
-                        <div onClick={this.toggleUploader}>
+                        <div>
+                            {this.state.error && (<h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)}
+                        </div>
+                        <div onClick={this.toggleUploader} className="profile-pic-div">
                             <ProfilePic 
                             first={this.state.first}
                             last={this.state.last}
@@ -91,16 +95,16 @@ export default class App extends Component {
                             className="header-pic"
                             />
                         </div>
-                        <div>
-                            {this.state.error && (<h1 style={{ color: "red" }}>Something went wrong with getting your information</h1>)}
-                        </div>
+                        
                     </div>
                     <div>
                         <div className="link-list">
+                            <div><Link to="/chat">Chat</Link></div>
                             <div><Link to="/users">Find people</Link></div>
+                            <div><Link to="/friends">Friends</Link></div>
                             <div> <Link to="/">My Profile</Link></div>
                             <div><Link to="/logout">Logout</Link></div>
-                            <div><Link to="/friends">Friends</Link></div>
+                            
                         </div>
 
                         <Route exact path="/"
@@ -155,6 +159,15 @@ export default class App extends Component {
                         <Route path="/friends"
                             render={props => (
                                 <Friends
+                                    key={props.match.url}
+                                    match={props.match}
+                                    history={props.history}
+                                />
+                            )} 
+                        />
+                        <Route path="/chat"
+                            render={props => (
+                                <Chat
                                     key={props.match.url}
                                     match={props.match}
                                     history={props.history}

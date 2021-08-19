@@ -11,6 +11,7 @@ const s3 = require("./ses");
 const multer = require('multer');
 const uidSafe = require('uid-safe');
 const server = require('http').Server(app);
+
 const io = require('socket.io')(server, {
     allowRequest: (req, callback) =>
         callback(null, req.headers.referer.startsWith("http://localhost:3000"))
@@ -34,13 +35,21 @@ const uploader = multer({
     }
 });
 
-app.use(express.json()); 
-app.use(compression());
-app.use(cookieSession({
+const cookieSessionMiddleware = cookieSession({
     secret: `set second cookie`,
     maxAge: 1000 * 60 * 60 * 24 * 14,
     sameSite: true
-}));
+});
+
+app.use(express.json()); 
+app.use(compression());
+app.use(cookieSessionMiddleware);
+
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
+
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
@@ -384,6 +393,37 @@ app.get("*", function (req, res) {
 
 
 
-app.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening on Port 3000.");
+});
+
+
+io.on('connection', function(socket) {
+    console.log(`socket with id: ${socket.id} has connected!`)
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+    console.log("socket.request.session.userId",socket.request.session.userId)
+
+    const userId = socket.request.session.userId;
+
+    //db.addMessage(text,userId)
+     /*
+    db.getLastTenMessages()
+    .then(({rows}) => {
+        console.log("chatmessages: ", rows)
+        socket.emit("chatMessages",rows)})
+    .catch((err) => {
+        console.log("ERROR: IO: getlasttenmessages: ",err)
+    });
+    
+   
+    socket.on("chatMessage", async (data) => {
+        const { rows } = await db.addMessage(data, userId);
+        io.emit("updateChat", rows);
+    });
+    */
+
+
+
 });
