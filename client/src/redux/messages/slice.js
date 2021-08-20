@@ -1,34 +1,26 @@
 export function chatMessagesReceived(messages) {
     return {
         type: "messages/tenmessages",
-        payload: messages
+        payload: {messages}
     }
 }
 
 export function chatMessageReceived(message) {
     return {
         type: "messages/newmessage",
-        payload: message
+        payload: {message}
     } 
 }
 
-export function handleText(text) {
-    return {
-        type: "messages/handleChange",
-        payload: text
-    }
-}
 
-
-export default function chatReducer (state = null, action) {
-    if (action.type == "messages/tenmessage") {
-        return state = action.payload;
+export default function chatReducer (state = [], action) {
+    if (action.type == "messages/tenmessages") {
+        console.log("action.type == messages/tenmessage", state)
+        console.log("action payload ten message", action.payload)
+        state = action.payload.messages
     }
     if (action.type == "messages/newmessage") {
-        return [...state, action.payload]
-    }
-    if (action.type == "messages/handleChange") {
-        return [...state, action.payload]
+        state = [...state, action.payload]
     }
     return state;
 }

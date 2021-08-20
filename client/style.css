@@ -365,3 +365,26 @@ a {
     padding: 10px;
     
 }
+.chat-user-box {
+    display: flex;
+    flex-direction: row;
+    border: 1.5px solid #00000029;
+    margin: 5px;
+    width: 500px;
+}
+.chat-pic {
+    height: 30px;
+    width: 30px;
+    margin:5px;
+    object-fit: cover;
+
+}
+.chat-name {
+    margin:0;
+    padding:0;
+    margin-left: 3px;
+}
+
+.chat-user {
+    padding: 10px;
+}

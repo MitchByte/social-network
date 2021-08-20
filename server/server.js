@@ -408,6 +408,21 @@ io.on('connection', function(socket) {
 
     const userId = socket.request.session.userId;
 
+    db.getLastTenMessages()
+    .then(({rows}) => {
+        console.log("last ten messages",rows);
+        socket.emit("chatMessages",rows)
+    })
+    .catch((err)=> {console.log("error in socket on new message/ get last 10 messages", err)})
+
+    socket.on("new-message", (data) => {
+        console.log("new message: ", data)
+        db.addMessage(data,userId)
+        .then(()=> { console.log("added message everything went well")})
+        .catch((err)=> {(err) => {console.log("error in socket on new message/ add message", err)}});
+        //io.emit("chatMessage", data)
+    })
+
     //db.addMessage(text,userId)
      /*
     db.getLastTenMessages()

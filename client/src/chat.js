@@ -1,39 +1,47 @@
 import {useRef} from 'react';
 import { socket } from "./socket.js";
-import { useDispatch,useSelector } from "react-redux";
-import { handleText} from "./redux/messages/slice";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 
 
 export default function Chat () {
     const elemRef = useRef();
-    const dispatch = useDispatch();
     const messages = useSelector((state) => state.messages);
-    const msg = useSelector((state)=> {
-        console.log("state.messages", state.messages);
-        return state.messages});
-    
-    console.log("msg", msg)
 
     if (!messages) { return null};
 
-    /*const send = () => {
-        socket.emit("chatMessage",msg)
-    }*/
-    const handleChange = ({target}) => {
-        console.log("CHAT: textarea value: ", target.value);
-        dispatch(handleText(target.value));
+    const send = (e) => {
+        if (e.key == "Enter") {
+            e.preventDefault();
+            socket.emit("new-message", e.target.value);
+            e.target.value = "";
+        }
     }
-
+    console.log("CHAT.JS: state messages", messages)
+    const msg = messages[0]
 
     return (
         <div className="chat-box">
             <h2>Chat</h2>
-            <div className="messages" ref={elemRef}>
+            <div className="messages">
+                {messages && messages.map((message) => (
+                    <div key={message.id} className="chat-user-box">
+                        <div className="chat-user">
+                        <Link to={"/user/"+ message.id}>
+                            <img className="chat-pic" src={message.imageurl || "/default-profilepic.jpg"}/>
+                            <p className="chat-name">{message.firstname} {message.lastname}</p>
+
+                        </Link>
+                        </div>
+                        <p>{message.text}</p>
+                    </div>
+
+                ))}
             </div>
             <div className="new-messages">
-                <textarea onChange={(e) => handleChange(e)} placeholder="Let's chat..."  rows="5" cols="50"/>
-                <button onClick={send()} className="chat-button">Send</button>
+                <textarea onKeyPress={send} placeholder="Let's chat..."  rows="5" cols="50"/>
+                <p>Just press enter</p>
             </div>
         </div>
     )

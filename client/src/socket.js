@@ -8,10 +8,12 @@ export const init = (store) => {
     }
 
     socket.on("chatMessages", (data) => {
+        console.log("SOCKET: last 10", data)
         store.dispatch(chatMessagesReceived(data));
     });
 
     socket.on("chatMessage", (data) => {
+        console.log("SOCKET DATA: new message ", data)
         store.dispatch(chatMessageReceived(data));
     });
 };
